@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "jerome-agent-skills",
+  "description": "Production-grade engineering skills for AI coding agents — covering the full software development lifecycle (SDLC) from spec to ship.",
+  "owner": {
+    "name": "Jerome Chua",
+    "url": "https://github.com/jerome-chua"
+  },
+  "plugins": [
+    {
+      "name": "agent-skills",
+      "source": {
+        "source": "github",
+        "repo": "jerome-chua/agent-skills"
+      },
+      "description": "Production-grade engineering skills covering an augmented form of development lifecycle (SDLC): understand, spec (requirements, core entities, APIs, data flow, high-level design, deep dives), plan, build, verify, review, ship & document.",
+      "homepage": "https://github.com/jerome-chua/agent-skills",
+      "license": "MIT",
+      "keywords": ["skills", "agents", "engineering", "spec", "tdd", "review", "ship", "documentation"]
+    }
+  ]
+}
