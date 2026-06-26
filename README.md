@@ -8,12 +8,20 @@ A personal marketplace of [Claude Code](https://claude.com/claude-code) skills.
 
 ## Install
 
-Add this repo as a marketplace, then install the plugin:
+From inside Claude Code on any machine, add this repo as a marketplace, then install the plugin:
 
 ```
-/plugin marketplace add <owner>/agent-skills
-/plugin install my-skills@my-skills-marketplace
+/plugin marketplace add jerome-chua/agent-skills
+/plugin install agent-skills@jerome-agent-skills
 ```
+
+To update later (after pushing new skills):
+
+```
+/plugin marketplace update jerome-agent-skills
+```
+
+> `agent-skills` is the plugin name and `jerome-agent-skills` is the marketplace name (both defined in `.claude-plugin/`). The `jerome-chua/agent-skills` argument is the GitHub repo the marketplace is fetched from.
 
 ## Layout
 
