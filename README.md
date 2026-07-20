@@ -4,7 +4,31 @@ A personal marketplace of [Claude Code](https://claude.com/claude-code) skills.
 
 ## Skills
 
+### Understanding
+
+- **explain-diff** — Generate a rich, self-contained interactive HTML explanation of a code change, diff, branch, or PR: background, intuition, code walkthrough, diagrams, and a five-question quiz, saved as a dated file outside the repo.
 - **max-words** — Cap Claude's response length at N words when explaining technical / CS / software concepts. Invoke with `/max-words 50`.
+
+### Planning
+
+- **grilling** — Interview you relentlessly about a plan or design, one question at a time, to stress-test it before building.
+- **grill-me** — Shortcut that kicks off a `/grilling` session. Invoke with `/grill-me`.
+
+### Coding
+
+_None yet._
+
+### Documentation
+
+_None yet._
+
+### Testing
+
+_None yet._
+
+### Automation
+
+_None yet._
 
 ## Install
 
