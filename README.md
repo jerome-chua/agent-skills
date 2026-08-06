@@ -6,7 +6,7 @@ A personal marketplace of [Claude Code](https://claude.com/claude-code) skills.
 
 ### Understanding
 
-- **explain-diff** — Generate a rich, self-contained interactive HTML explanation of a code change, diff, branch, or PR: background, intuition, code walkthrough, diagrams, and a five-question quiz, saved as a dated file outside the repo.
+- **explain-diff** — Generate a rich, self-contained interactive HTML explanation of a code change, diff, branch, or PR: background, intuition, code walkthrough, diagrams, and a five-question quiz, saved as a dated file outside the repo. (Takes reference from [Geoffrey Litt's PR explanation prompt](https://gist.github.com/geoffreylitt/a29df1b5f9865506e8952488eac3d524).)
 - **max-words** — Cap the agent's response length at N words when explaining technical / CS / software concepts. Invoke with `/max-words 50`.
 
 ### Planning
