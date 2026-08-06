@@ -1,0 +1,5 @@
+interface:
+  display_name: "Max Words"
+  short_description: "Cap response length at N words"
+policy:
+  allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 ---
 name: max-words
-description: Cap Claude's response length at N words when explaining technical / computer science / software concepts. Use when the user invokes /max-words with a single number, e.g. "/max-words 50".
+description: Cap the agent's response length at N words when explaining technical / computer science / software concepts. Use when the user invokes /max-words with a single number, e.g. "/max-words 50".
 disable-model-invocation: true
 argument-hint: [N]
 ---
