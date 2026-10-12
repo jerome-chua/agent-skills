@@ -7,6 +7,7 @@ A personal marketplace of [Claude Code](https://claude.com/claude-code) skills.
 ### Understanding
 
 - **explain-diff** — Generate a rich, self-contained interactive HTML explanation of a code change, diff, branch, or PR: background, intuition, code walkthrough, diagrams, and a five-question quiz, saved as a dated file outside the repo. (Takes reference from [Geoffrey Litt's PR explanation prompt](https://gist.github.com/geoffreylitt/a29df1b5f9865506e8952488eac3d524).)
+- **explain-simply** — Explain a file, directory, URL, topic, or the current conversation in plain, controlled English, written about 80% of the way to [ASD-STE100](https://www.asd-ste100.org/) (Simplified Technical English). Invoke with `/explain-simply [target]`. (Idea from [Andrej Karpathy](https://x.com/karpathy/status/2105819303471976479).)
 - **max-words** — Cap the agent's response length at N words when explaining technical / CS / software concepts. Invoke with `/max-words 50`.
 
 ### Planning
