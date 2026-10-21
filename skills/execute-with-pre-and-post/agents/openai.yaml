@@ -1,0 +1,5 @@
+interface:
+  display_name: "Execute With Pre and Post"
+  short_description: "Run a phased plan with per-phase briefs and reports"
+policy:
+  allow_implicit_invocation: false

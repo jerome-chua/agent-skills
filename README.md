@@ -14,10 +14,11 @@ A personal marketplace of [Claude Code](https://claude.com/claude-code) skills.
 
 - **grilling** — Interview you relentlessly about a plan or design, one question at a time, to stress-test it before building.
 - **grill-me** — Shortcut that kicks off a `/grilling` session. Invoke with `/grill-me`.
+- **execute-with-pre-and-post** — Run an approved plan-mode plan one phase at a time: a short pre-brief before each phase, then a PM-style commit message, changed files, progress, and a next-phase preview, pausing for your go-ahead. Invoke with `/execute-with-pre-and-post [plan file]`.
 
 ### Coding
 
-_None yet._
+- **clean-code** — Write and refactor clean, DRY, SOLID code with obvious human-readable names and no single-character variables (even in loops). Applies automatically when coding; invoke with `/clean-code [path]` to review or refactor existing code.
 
 ### Documentation
 

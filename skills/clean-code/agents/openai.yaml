@@ -1,0 +1,5 @@
+interface:
+  display_name: "Clean Code"
+  short_description: "Write clean, DRY, SOLID code with readable names"
+policy:
+  allow_implicit_invocation: true
