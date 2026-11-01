@@ -14,15 +14,20 @@ A personal marketplace of [Claude Code](https://claude.com/claude-code) skills.
 
 - **grilling** — Interview you relentlessly about a plan or design, one question at a time, to stress-test it before building.
 - **grill-me** — Shortcut that kicks off a `/grilling` session. Invoke with `/grill-me`.
-- **execute-with-pre-and-post** — Run an approved plan-mode plan one phase at a time: a short pre-brief before each phase, then a PM-style commit message, changed files, progress, and a next-phase preview, pausing for your go-ahead. Invoke with `/execute-with-pre-and-post [plan file]`.
+
+### Spec Creation
+
+- **specs** — Turn a product idea and the decisions from a `/grill-me` session into the foundation specs: `specs/mission.md` (problem, users, functional requirements), `specs/tech-stack.md` (non-functional requirements, stack, system design, decisions), and `specs/roadmap.md` (phased delivery, each phase mapped to requirement IDs). Invoke with `/specs [product description or path to notes]`.
 
 ### Coding
 
+- **execute-with-pre-and-post** — Run an approved plan-mode plan one phase at a time: a short pre-brief before each phase, then a PM-style commit message, changed files, progress, and a next-phase preview, pausing for your go-ahead. Invoke with `/execute-with-pre-and-post [plan file]`.
 - **clean-code** — Write and refactor clean, DRY, SOLID code with obvious human-readable names and no single-character variables (even in loops). Applies automatically when coding; invoke with `/clean-code [path]` to review or refactor existing code.
+- **pm-commit** — Write a git commit message from a product manager's point of view: what changed and why it matters to users, with enough technical detail to be specific, in one paragraph of at most 50 words. Reads the staged diff by default. Invoke with `/pm-commit [ref, range, or description]`.
 
 ### Documentation
 
-_None yet._
+- **sync-docs** — Review the changes merged to `main` over a period (default: since the last sync, or the past week) against your docs — a `docs/` folder, a README, or a separate docs repo — then update what is missing or stale and open a PR. Built to run weekly via `/schedule`. Invoke with `/sync-docs [docs path or owner/repo] [--since <ref|date|Nd>] [--dry-run]`.
 
 ### Testing
 

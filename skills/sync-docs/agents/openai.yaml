@@ -1,0 +1,5 @@
+interface:
+  display_name: "Sync Docs"
+  short_description: "Review merged changes and open a PR updating the docs"
+policy:
+  allow_implicit_invocation: true

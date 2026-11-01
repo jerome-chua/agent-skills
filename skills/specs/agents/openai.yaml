@@ -1,0 +1,5 @@
+interface:
+  display_name: "Specs"
+  short_description: "Write mission, tech-stack, and roadmap specs from a grilling session"
+policy:
+  allow_implicit_invocation: false
