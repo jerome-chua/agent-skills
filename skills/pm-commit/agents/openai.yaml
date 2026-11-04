@@ -1,5 +1,0 @@
-interface:
-  display_name: "PM Commit"
-  short_description: "Product-manager-style commit message, one paragraph, max 50 words"
-policy:
-  allow_implicit_invocation: true

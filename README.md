@@ -1,6 +1,6 @@
 # agent-skills
 
-A personal collection of 12 skills for AI coding agents, available as a [Claude Code](https://claude.com/claude-code) plugin or as individual [Agent Skills](https://agentskills.io).
+A personal marketplace of 14 [Claude Code](https://claude.com/claude-code) skills. Individual skills are also available through the [skills CLI](https://github.com/vercel-labs/skills).
 
 ## Skills
 
@@ -21,6 +21,10 @@ Examples below use standalone Claude Code commands. With the plugin installed, a
 
 - **[specs](skills/specs/SKILL.md)** — Turn a product idea and the decisions from a `/grill-me` session into the foundation specs: `specs/mission.md` (problem, users, functional requirements), `specs/tech-stack.md` (non-functional requirements, stack, system design, decisions), and `specs/roadmap.md` (phased delivery, each phase mapped to requirement IDs). Invoke with `/specs [product description or path to notes]`.
 
+### Spike
+
+- **[rea-spike](skills/rea-spike/SKILL.md)** — Reverse engineer a product or website with REA (Reverse Engineer Anything), write a feature-parity checklist with evidence, recovered API contracts, data model, and performance baseline, then scaffold a fully open source reimplementation pinned to the latest stable release of your chosen language with a first vertical slice, tests, lint, CI, and a benchmark. Registers a Stop hook (the same mechanism `/goal` uses) that keeps Claude Code building until every feature is done and the performance targets are met, so the whole spike runs from one command. Requests Claude Opus with `xhigh` effort through Claude Code frontmatter. Invoke with `/rea-spike <product or website> <programming language>`. (Uses [REA](https://rea.tools/) by [morluto](https://github.com/morluto/rea), MIT licensed; run `npx rea-agents@latest setup` first.)
+
 ### Coding
 
 - **[execute-with-pre-and-post](skills/execute-with-pre-and-post/SKILL.md)** — Run an approved plan-mode plan one phase at a time: a short pre-brief before each phase, then a PM-style commit message, changed files, progress, and a next-phase preview, pausing for your go-ahead. Invoke with `/execute-with-pre-and-post [plan file]`.
@@ -29,6 +33,7 @@ Examples below use standalone Claude Code commands. With the plugin installed, a
 
 ### Documentation
 
+- **[system-design](skills/system-design/SKILL.md)** — Generate a self-contained HTML system design document with Excalidraw-style diagrams: functional and non-functional requirements, core and secondary entities, API design, data flow, service and database architecture, CI/CD, deep dive suggestions, and security considerations. Requests Claude Opus with `xhigh` effort through Claude Code frontmatter for best results. Invoke with `/system-design [product description, specs path, or repository]`.
 - **[sync-docs](skills/sync-docs/SKILL.md)** — Review the changes merged to `main` over a period (default: since the last sync, or the past week) against your docs — a `docs/` folder, a README, or a separate docs repo — then update what is missing or stale and open a PR. Built to run weekly via `/schedule`. Invoke with `/sync-docs [docs path or owner/repo] [--since <ref|date|Nd>] [--dry-run]`.
 
 ### Productivity
@@ -76,9 +81,9 @@ npx skills@latest update
 
 For a manual install, copy the entire skill directory, including any supporting files, into your agent’s skills directory. Agents that use `.agents/skills/` can load skills there per project, or from `~/.agents/skills/` per user; other agents may use different paths.
 
-CLI-installed skills are managed separately from the Claude Code plugin; use the CLI commands above to update them. Manually copied skills need to be refreshed by hand. Each skill also ships an `agents/openai.yaml` with Codex-specific metadata — display name, short description, and `allow_implicit_invocation: false` for skills that should only run when explicitly invoked (Codex doesn't read Claude's `disable-model-invocation` frontmatter). Claude Code ignores these files.
+CLI-installed skills are managed separately from the Claude Code plugin; use the CLI commands above to update them. Manually copied skills need to be refreshed by hand.
 
-[^1]: Including OpenAI Codex, OpenCode, Gemini CLI, Cursor, Amp, Goose, GitHub Copilot / VS Code, and more — see the full [client showcase](https://agentskills.io/clients).
+[^1]: Including OpenCode, Gemini CLI, Cursor, Amp, Goose, GitHub Copilot / VS Code, and more — see the full [client showcase](https://agentskills.io/clients).
 
 ## Layout
 
@@ -97,14 +102,16 @@ agent-skills/
 │   ├── handoff/
 │   ├── max-words/
 │   ├── pm-commit/
+│   ├── rea-spike/
 │   ├── specs/               # includes spec format templates
 │   ├── sync-docs/
+│   ├── system-design/
 │   └── teach/               # includes learning workspace formats
 ├── LICENSE
 └── README.md
 ```
 
-Each skill directory contains `SKILL.md` and `agents/openai.yaml`. Some also include supporting Markdown formats referenced by the skill.
+Each skill directory contains `SKILL.md`. Some also include supporting Markdown formats referenced by the skill.
 
 ## License
 

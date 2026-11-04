@@ -1,5 +1,0 @@
-interface:
-  display_name: "Explain Simply"
-  short_description: "Explain anything in plain, STE-style English"
-policy:
-  allow_implicit_invocation: false
