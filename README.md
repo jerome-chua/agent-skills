@@ -1,46 +1,40 @@
 # agent-skills
 
-A personal marketplace of [Claude Code](https://claude.com/claude-code) skills.
+A personal collection of 12 skills for AI coding agents, available as a [Claude Code](https://claude.com/claude-code) plugin or as individual [Agent Skills](https://agentskills.io).
 
 ## Skills
 
+Examples below use standalone Claude Code commands. With the plugin installed, add the `agent-skills:` prefix: `/agent-skills:explain-simply README.md`. See [Claude Code’s plugin command format](https://code.claude.com/docs/en/plugins).
+
 ### Understanding
 
-- **explain-diff** — Generate a rich, self-contained interactive HTML explanation of a code change, diff, branch, or PR: background, intuition, code walkthrough, diagrams, and a five-question quiz, saved as a dated file outside the repo. (Takes reference from [Geoffrey Litt's PR explanation prompt](https://gist.github.com/geoffreylitt/a29df1b5f9865506e8952488eac3d524).)
-- **explain-simply** — Explain a file, directory, URL, topic, or the current conversation in plain, controlled English, written about 80% of the way to [ASD-STE100](https://www.asd-ste100.org/) (Simplified Technical English). Invoke with `/explain-simply [target]`. (Idea from [Andrej Karpathy](https://x.com/karpathy/status/2105819303471976479).)
-- **max-words** — Cap the agent's response length at N words when explaining technical / CS / software concepts. Invoke with `/max-words 50`.
+- **[explain-diff](skills/explain-diff/SKILL.md)** — Generate a rich, self-contained interactive HTML explanation of a code change, diff, branch, or PR: background, intuition, code walkthrough, diagrams, and a five-question quiz, saved as a dated file outside the repo. (Takes reference from [Geoffrey Litt's PR explanation prompt](https://gist.github.com/geoffreylitt/a29df1b5f9865506e8952488eac3d524).)
+- **[explain-simply](skills/explain-simply/SKILL.md)** — Explain a file, directory, URL, topic, or the current conversation in plain, controlled English, written about 80% of the way to [ASD-STE100](https://www.asd-ste100.org/) (Simplified Technical English). Invoke with `/explain-simply [target]`. (Idea from [Andrej Karpathy](https://x.com/karpathy/status/2105819303471976479).)
+- **[max-words](skills/max-words/SKILL.md)** — Cap the agent's response length at N words when explaining technical / CS / software concepts. Invoke with `/max-words 50`.
 
 ### Planning
 
-- **grilling** — Interview you relentlessly about a plan or design, one question at a time, to stress-test it before building.
-- **grill-me** — Shortcut that kicks off a `/grilling` session. Invoke with `/grill-me`.
+- **[grilling](skills/grilling/SKILL.md)** — Interview you relentlessly about a plan or design, one question at a time, to stress-test it before building.
+- **[grill-me](skills/grill-me/SKILL.md)** — Shortcut that kicks off a `/grilling` session. Invoke with `/grill-me`.
 
 ### Spec Creation
 
-- **specs** — Turn a product idea and the decisions from a `/grill-me` session into the foundation specs: `specs/mission.md` (problem, users, functional requirements), `specs/tech-stack.md` (non-functional requirements, stack, system design, decisions), and `specs/roadmap.md` (phased delivery, each phase mapped to requirement IDs). Invoke with `/specs [product description or path to notes]`.
+- **[specs](skills/specs/SKILL.md)** — Turn a product idea and the decisions from a `/grill-me` session into the foundation specs: `specs/mission.md` (problem, users, functional requirements), `specs/tech-stack.md` (non-functional requirements, stack, system design, decisions), and `specs/roadmap.md` (phased delivery, each phase mapped to requirement IDs). Invoke with `/specs [product description or path to notes]`.
 
 ### Coding
 
-- **execute-with-pre-and-post** — Run an approved plan-mode plan one phase at a time: a short pre-brief before each phase, then a PM-style commit message, changed files, progress, and a next-phase preview, pausing for your go-ahead. Invoke with `/execute-with-pre-and-post [plan file]`.
-- **clean-code** — Write and refactor clean, DRY, SOLID code with obvious human-readable names and no single-character variables (even in loops). Applies automatically when coding; invoke with `/clean-code [path]` to review or refactor existing code.
-- **pm-commit** — Write a git commit message from a product manager's point of view: what changed and why it matters to users, with enough technical detail to be specific, in one paragraph of at most 50 words. Reads the staged diff by default. Invoke with `/pm-commit [ref, range, or description]`.
+- **[execute-with-pre-and-post](skills/execute-with-pre-and-post/SKILL.md)** — Run an approved plan-mode plan one phase at a time: a short pre-brief before each phase, then a PM-style commit message, changed files, progress, and a next-phase preview, pausing for your go-ahead. Invoke with `/execute-with-pre-and-post [plan file]`.
+- **[clean-code](skills/clean-code/SKILL.md)** — Write and refactor clean, DRY, SOLID code with obvious human-readable names and no single-character variables (even in loops). Applies automatically when coding; invoke with `/clean-code [path]` to review or refactor existing code.
+- **[pm-commit](skills/pm-commit/SKILL.md)** — Write a git commit message from a product manager's point of view: what changed and why it matters to users, with enough technical detail to be specific, in one paragraph of at most 50 words. Uses a supplied ref, range, or description; otherwise reads staged changes, falling back to the working tree when nothing is staged. Prints the message without committing. Invoke with `/pm-commit [ref, range, or description]`.
 
 ### Documentation
 
-- **sync-docs** — Review the changes merged to `main` over a period (default: since the last sync, or the past week) against your docs — a `docs/` folder, a README, or a separate docs repo — then update what is missing or stale and open a PR. Built to run weekly via `/schedule`. Invoke with `/sync-docs [docs path or owner/repo] [--since <ref|date|Nd>] [--dry-run]`.
-
-### Testing
-
-_None yet._
-
-### Automation
-
-_None yet._
+- **[sync-docs](skills/sync-docs/SKILL.md)** — Review the changes merged to `main` over a period (default: since the last sync, or the past week) against your docs — a `docs/` folder, a README, or a separate docs repo — then update what is missing or stale and open a PR. Built to run weekly via `/schedule`. Invoke with `/sync-docs [docs path or owner/repo] [--since <ref|date|Nd>] [--dry-run]`.
 
 ### Productivity
 
-- **teach** — Turn the current directory into a persistent learning workspace: mission, resources, HTML lessons, and learning records that carry across sessions. Invoke with `/teach`. (From [mattpocock/skills](https://github.com/mattpocock/skills).)
-- **handoff** — Compact the current conversation into a handoff document a fresh agent session can pick up. Invoke with `/handoff`. (From [mattpocock/skills](https://github.com/mattpocock/skills).)
+- **[teach](skills/teach/SKILL.md)** — Turn the current directory into a persistent learning workspace: mission, resources, HTML lessons, and learning records that carry across sessions. Invoke with `/teach`. (From [mattpocock/skills](https://github.com/mattpocock/skills).)
+- **[handoff](skills/handoff/SKILL.md)** — Compact the current conversation into a handoff document a fresh agent session can pick up. Saves it in the OS temporary directory and references existing artifacts. Invoke with `/handoff [next-session focus]`. (From [mattpocock/skills](https://github.com/mattpocock/skills).)
 
 ## Install
 
@@ -53,36 +47,65 @@ From inside Claude Code on any machine, add this repo as a marketplace, then ins
 /plugin install agent-skills@jerome-agent-skills
 ```
 
-To update later (after pushing new skills):
+To update the installed plugin later, run this in your shell:
 
+```bash
+claude plugin update agent-skills@jerome-agent-skills
 ```
-/plugin marketplace update jerome-agent-skills
-```
+
+Restart the session to load the updated version. Updating only the marketplace listing is a separate action; see [Claude Code’s update instructions](https://code.claude.com/docs/en/discover-plugins#update-plugins-now).
 
 > `agent-skills` is the plugin name and `jerome-agent-skills` is the marketplace name (both defined in `.claude-plugin/`). The `jerome-chua/agent-skills` argument is the GitHub repo the marketplace is fetched from.
 
-### Any agent (npx)
+### Compatible agents (npx)
 
-Every skill follows the open [Agent Skills](https://agentskills.io) spec, so it also works in any agent that supports the spec.[^1] Use the [skills CLI](https://github.com/vercel-labs/skills) to copy the skills into a project:
+Every skill follows the open [Agent Skills](https://agentskills.io) spec, so it also works in any agent that supports the spec.[^1] Use the [skills CLI](https://github.com/vercel-labs/skills) (Node.js 22.20 or later) to install skills into a project. The CLI lets you choose the skills and target agents:
 
 ```
 npx skills@latest add jerome-chua/agent-skills
 ```
 
-Or copy a skill directory manually into `.agents/skills/` (per-repo) or `~/.agents/skills/` (per-user).
+Add `-g` to install across projects, or `--skill explain-simply` to select a single skill.
 
-Unlike the plugin install, this copies the files into place — they're yours to edit, but they don't auto-update. Each skill also ships an `agents/openai.yaml` with Codex-specific metadata — display name, short description, and `allow_implicit_invocation: false` for skills that should only run when explicitly invoked (Codex doesn't read Claude's `disable-model-invocation` frontmatter). Claude Code ignores these files.
+Check for and apply updates with the [skills CLI update commands](https://github.com/vercel-labs/skills#other-commands):
+
+```bash
+npx skills@latest check
+npx skills@latest update
+```
+
+For a manual install, copy the entire skill directory, including any supporting files, into your agent’s skills directory. Agents that use `.agents/skills/` can load skills there per project, or from `~/.agents/skills/` per user; other agents may use different paths.
+
+CLI-installed skills are managed separately from the Claude Code plugin; use the CLI commands above to update them. Manually copied skills need to be refreshed by hand. Each skill also ships an `agents/openai.yaml` with Codex-specific metadata — display name, short description, and `allow_implicit_invocation: false` for skills that should only run when explicitly invoked (Codex doesn't read Claude's `disable-model-invocation` frontmatter). Claude Code ignores these files.
 
 [^1]: Including OpenAI Codex, OpenCode, Gemini CLI, Cursor, Amp, Goose, GitHub Copilot / VS Code, and more — see the full [client showcase](https://agentskills.io/clients).
 
 ## Layout
 
-```
-agent-skills
+```text
+agent-skills/
 ├── .claude-plugin/
-│   ├── marketplace.json     # catalog users add (name: my-skills-marketplace)
-│   └── plugin.json          # plugin identity (name: my-skills)
-└── skills/
-    └── max-words/
-        └── SKILL.md
+│   ├── marketplace.json     # marketplace: jerome-agent-skills
+│   └── plugin.json          # plugin: agent-skills
+├── skills/
+│   ├── clean-code/
+│   ├── execute-with-pre-and-post/
+│   ├── explain-diff/
+│   ├── explain-simply/
+│   ├── grill-me/
+│   ├── grilling/
+│   ├── handoff/
+│   ├── max-words/
+│   ├── pm-commit/
+│   ├── specs/               # includes spec format templates
+│   ├── sync-docs/
+│   └── teach/               # includes learning workspace formats
+├── LICENSE
+└── README.md
 ```
+
+Each skill directory contains `SKILL.md` and `agents/openai.yaml`. Some also include supporting Markdown formats referenced by the skill.
+
+## License
+
+[MIT](LICENSE).
