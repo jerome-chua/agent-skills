@@ -1,6 +1,6 @@
 ---
 name: execute-with-pre-and-post
-description: Execute an approved, phased plan one phase at a time, with a short pre-brief before each phase and a structured post-phase report (PM-style commit message, changed files, progress, next phase) after it. Use when the user invokes /execute-with-pre-and-post after plan mode.
+description: Execute an approved, phased plan one phase at a time, with a short pre-brief before each phase and a structured post-phase report (PM-style commit message, changed files, progress, next phase) after it. Writes every phase with the clean-code skill and produces the commit message with the pm-commit skill. Use when the user invokes /execute-with-pre-and-post after plan mode.
 disable-model-invocation: true
 argument-hint: [plan file path]
 ---
@@ -8,6 +8,11 @@ argument-hint: [plan file path]
 # execute-with-pre-and-post
 
 Run an approved plan one phase at a time. Before each phase, give a short pre-brief. After each phase, give a fixed four-part report, then stop and wait for the user.
+
+This skill depends on two sibling skills from the same plugin. Invoke them with the `Skill` tool, with the `agent-skills:` prefix when the plugin is installed:
+
+- `clean-code`: the rules for every line of code you write or change.
+- `pm-commit`: the writer for every commit message in the report.
 
 ## Input
 
@@ -33,6 +38,11 @@ Note the current `git status` so you can find this phase's changes later.
 
 Do only the work in this phase. Do not start work from later phases. If you find work that belongs to a later phase, note it for the report.
 
+Always write with the `clean-code` skill:
+
+- At the start of the phase, invoke `clean-code` with no argument, and apply its rules to every file you create or change.
+- At the end of the phase, before the report, invoke `clean-code` again with the files changed in this phase as the argument. Fix the violations it lists. Do not ask before this review, because it stays inside the phase's own files. Ask only when the fix would change a public interface or touch files outside the phase.
+
 ### 3. Post-phase report
 
 Use exactly this format:
@@ -41,7 +51,7 @@ Use exactly this format:
 ### Phase N of M complete: <phase name>
 
 **Commit message**
-<one paragraph, max 42 words>
+<one paragraph from pm-commit, max 50 words>
 
 **Files changed**
 - `path/to/file` (created | modified | deleted): <a few words on what changed>
@@ -58,7 +68,7 @@ Use exactly this format:
 
 Section rules:
 
-- **Commit message**: write it as a technical product manager would. Say what changed and why it matters to users or the product. Include enough technical detail (components, endpoints, behaviors) to be specific. Use one paragraph of 42 words or fewer. Do not use bullets or a separate subject line.
+- **Commit message**: always produce it with the `pm-commit` skill. Earlier phases are usually still uncommitted, so scope it to this phase: pass a one-line description of the phase and the list of files changed in this phase as the argument. Paste the message pm-commit prints without changes. It is one paragraph of 50 words or fewer, with no bullets and no separate subject line.
 - **Files changed**: build the list from `git status` and `git diff --name-status`, compared with the state at the start of the phase. Do not build it from memory. Include untracked new files as `created`. If the directory is not a git repository, list the files you touched.
 - **Progress**: list every phase. Mark finished phases ✅ and the rest ⬜. Put the "just finished" note on the phase you just did.
 - **Next phase**: use 50 words or fewer. Mention any risks or open questions.
@@ -70,7 +80,7 @@ Always stop after the report and wait for the user's go-ahead, even in auto mode
 ## Rules
 
 - Only print the commit message. Never run `git add` or `git commit` unless the user asks. If they ask, use the message from the report.
-- Count the words in the commit message and the next-phase text before you send. Rewrite either one if it goes over its limit.
+- Count the words in the next-phase text before you send. Rewrite it if it goes over its limit. pm-commit counts the commit message itself.
 - If a phase fails or is only partly done (for example, tests fail), say so in the report. Mark it ⚠️ instead of ✅, and explain what is left in "Next phase".
 - If the plan must change during execution, say so in the report and confirm the change with the user before you continue.
-- After the last phase, replace "Next phase" with **Wrap-up**: one line that summarizes the whole plan and names any follow-ups.
+- After the last phase, replace "Next phase" with **Wrap-up**: a commit message from `pm-commit` that covers every change the plan made, followed by one line that names any follow-ups. Pass pm-commit a description of the whole plan, or the range from the commit before the first phase to `HEAD` if the user committed along the way.
