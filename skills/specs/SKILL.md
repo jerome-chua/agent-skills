@@ -45,6 +45,7 @@ If none of these answer the questions the format files ask, run the interview no
 - Make every functional requirement testable. "Users can export a report as CSV" can be checked; "the app is easy to use" cannot, and belongs in success metrics or a non-functional requirement with a target.
 - Give every non-functional requirement a number or an observable condition: a latency at a percentile, a data-loss bound, a supported browser list.
 - For every stack and design choice, record the alternatives that were considered and why they lost. This is the part a future reader cannot reconstruct.
+- After `tech-stack.md` names a runtime and its libraries, run the `stack-check` skill. It looks each version up in Context Hub and the package registries and writes a Version compatibility section, so the spec does not pin a runtime that its own libraries no longer support.
 - Scope each roadmap phase to something a user, or at least a developer, can see working. Phases that deliver only internal scaffolding hide risk until the end.
 - Keep prose short. Tables for requirements, decisions, and phases; sentences for the problem, the solution, and the rationale.
 

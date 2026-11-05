@@ -49,6 +49,14 @@ The examples below use standalone Claude Code commands. If you installed the plu
   ```bash
   /specs notes/grill-me-decisions.md
   ```
+- **[stack-check](skills/stack-check/SKILL.md)** — Checks the runtime and library versions in `specs/tech-stack.md`, or in the repo's manifests, for compatibility, and records the result in the spec. (Uses [Context Hub](https://github.com/andrewyng/context-hub) by Andrew Ng and contributors, MIT licensed. Run `npm install -g @aisuite/chub` first.)
+  - Looks each library up in Context Hub for its current version, runtime requirement, and migration notes, then verifies the exact pinned version against PyPI or npm, and the runtime against its release calendar.
+  - Classifies every row as ok, conflict, stale, or unverified, with the evidence behind it, and computes the runtime window the whole stack supports. Catches cases like LangChain 1.x needing Python 3.10 or later on a project pinned to 3.9.
+  - Writes a Version compatibility section into `tech-stack.md` and proposes a fix for each conflict, such as raising the runtime or pinning an older library line. It never edits manifests or lockfiles.
+  - Input: a path to `tech-stack.md` or a manifest, or a list of packages. With no input, it reads `specs/tech-stack.md`, then the repo's manifests.
+  ```bash
+  /stack-check langchain fastapi pydantic
+  ```
 
 ### Spike
 
@@ -60,6 +68,7 @@ The examples below use standalone Claude Code commands. If you installed the plu
   - Step 2 - reverse engineer: writes a feature checklist with evidence, the recovered API contracts, the data model, and a performance baseline.
   - Step 3 - build: scaffolds the reimplementation on the latest stable release of your language, with a first vertical slice, tests, lint, CI, and a benchmark.
   - Registers a Stop hook, the same mechanism that `/goal` uses. The hook keeps Claude Code building until every feature is done and the performance targets are met, so the whole spike runs from one command.
+  - Step 4 - checkpoint: a second Stop hook watches context use. At 50% of the window it commits, writes `spike/HANDOFF.md` with the handoff skill, and pauses once. Open a new chat in the project directory and rerun the same command to resume, or reply `continue` to keep building until the context window is exhausted. Tune with `REA_SPIKE_HANDOFF_AT` (a percentage, or `off`).
   - Requests Claude Opus with `xhigh` effort through Claude Code frontmatter.
   ```bash
   /rea-spike https://todomvc.com/examples/react/ Rust
@@ -120,8 +129,9 @@ The examples below use standalone Claude Code commands. If you installed the plu
   /teach Rust ownership and borrowing
   ```
 - **[handoff](skills/handoff/SKILL.md)** — Compacts the current conversation into a handoff document that a fresh agent session can pick up. (From [mattpocock/skills](https://github.com/mattpocock/skills).)
-  - Saves the document in the OS temporary directory.
+  - Saves the document in the OS temporary directory, or where a calling skill tells it to (rea-spike saves it as `spike/HANDOFF.md`).
   - References existing artifacts instead of copying them.
+  - Can be invoked by Claude as well as by you, so other skills can hand off long-running work.
   - Input: the focus of the next session. With no input, it writes a general handoff.
   ```bash
   /handoff Fix the flaky integration tests in the payments module
@@ -189,7 +199,9 @@ agent-skills/
 │   ├── max-words/
 │   ├── pm-commit/
 │   ├── rea-spike/
+│   │   └── scripts/
 │   ├── specs/
+│   ├── stack-check/
 │   ├── sync-docs/
 │   ├── system-design/
 │   └── teach/

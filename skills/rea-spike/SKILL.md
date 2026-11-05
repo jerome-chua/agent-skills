@@ -1,6 +1,6 @@
 ---
 name: rea-spike
-description: Reverse engineer a product or website with REA (Reverse Engineer Anything), then build a fully open source reimplementation in the latest stable version of a chosen programming language, with performance as a first-class requirement. Asks about the user's relationship to the target first and runs in one of two modes, a feature-parity spike for targets the user owns or is authorized to rebuild, or a bounded educational demo for targets they are only studying. Registers a Stop hook, the same mechanism /goal uses, so one command runs the spike to completion. Use when the user invokes /rea-spike <product or website> <programming language>.
+description: Reverse engineer a product or website with REA (Reverse Engineer Anything), then build a fully open source reimplementation in the latest stable version of a chosen programming language, with performance as a first-class requirement. Asks about the user's relationship to the target first and runs in one of two modes, a feature-parity spike for targets the user owns or is authorized to rebuild, or a bounded educational demo for targets they are only studying. Registers a Stop hook, the same mechanism /goal uses, so one command runs the spike to completion, and pauses once at 50% context use to write spike/HANDOFF.md with the handoff skill so the user can resume in a fresh chat or reply continue. Use when the user invokes /rea-spike <product or website> <programming language>.
 disable-model-invocation: true
 argument-hint: "<product or website> <programming language>"
 model: opus
@@ -20,16 +20,22 @@ hooks:
             status on the spike branch; (b) Claude has explicitly stopped to ask
             the user for something only they can supply, such as a missing
             argument, REA setup, credentials, or authorization; (c) Claude's
-            latest progress report says the spike turn count has reached 40.
+            latest progress report says the spike turn count has reached 40;
+            (d) Claude's latest turn is a CONTEXT CHECKPOINT: it reports that
+            spike/HANDOFF.md was written and asks the user whether to resume in
+            a new chat or reply continue.
             Otherwise respond {"ok": false, "reason": "<the next concrete piece
             of work, naming the F-n rows or checks still failing>"}. Respond
             {"ok": false, "impossible": true, "reason": "<why>"} only if the
             condition can never be met. Hook input: $ARGUMENTS
+        - type: command
+          command: python3 "${CLAUDE_PLUGIN_ROOT}/skills/rea-spike/scripts/context_checkpoint.py"
+          timeout: 30
 ---
 
 # REA Spike
 
-Reverse engineer the supplied product or website with REA, write down what it does as a feature checklist with evidence, scaffold an open source reimplementation in the latest stable release of the supplied language, and keep building until the agreed scope and performance targets are met. The skill runs in one of two modes, chosen in Phase 0 from the user's relationship to the target: **parity mode** rebuilds the whole product for a target the user owns or is authorized to rebuild, and **demo mode** builds a bounded, working educational demo for a target the user is only studying. The Stop hook in the frontmatter re-prompts Claude after every turn until the completion condition holds, so the whole spike runs from one command.
+Reverse engineer the supplied product or website with REA, write down what it does as a feature checklist with evidence, scaffold an open source reimplementation in the latest stable release of the supplied language, and keep building until the agreed scope and performance targets are met. The skill runs in one of two modes, chosen in Phase 0 from the user's relationship to the target: **parity mode** rebuilds the whole product for a target the user owns or is authorized to rebuild, and **demo mode** builds a bounded, working educational demo for a target the user is only studying. The Stop hook in the frontmatter re-prompts Claude after every turn until the completion condition holds, so the whole spike runs from one command. A second Stop hook watches context use and pauses the loop once, at 50% of the window, to write a handoff document; see Context checkpoint below.
 
 Credits: REA (Reverse Engineer Anything) by morluto, MIT licensed. Website: https://rea.tools/. Source: https://github.com/morluto/rea.
 
@@ -44,6 +50,16 @@ The frontmatter requests Claude Opus at `xhigh` effort for the skill's turn. If 
 - The first argument is the target: a URL, a product name, a local path to an app or package, or an already-open browser page. If it is a product name with no URL or path, resolve it to the public website or installable artifact and confirm the choice in one line.
 - The second argument is the implementation language. Determine its latest stable release at run time from the language's official site or release feed; do not rely on remembered version numbers. Pin that version in the project's toolchain file.
 - If either argument is missing, ask one question for the missing value and stop.
+
+## Resuming from a handoff
+
+Before Phase 0, look for `spike/HANDOFF.md` in the working directory or one level below it (`./spike/HANDOFF.md` or `./<slug>/spike/HANDOFF.md`). If one exists and its target matches the first argument, this is a resumed spike:
+
+1. Read `spike/HANDOFF.md`, `spike/SCOPE.md`, and `spike/PROGRESS.md`, and check out the spike branch named in the handoff.
+2. Say in one line what was done and what comes next. Do not repeat Phase 0, 1, or 2; the mode, scope, evidence, and scaffold are already recorded. Consult `spike/PARITY.md`, `spike/CONTRACTS.md`, and `spike/rea-bundle/` as needed, and open REA again only when a `todo` row needs evidence the bundle lacks.
+3. Continue with Phase 3. The turn cap of 40 and the context checkpoint both start fresh in the new chat.
+
+If the handoff names a different target, or the user says to start over, ignore it and begin at Phase 0.
 
 ## Rules
 
@@ -100,6 +116,23 @@ The Stop hook keeps the session working after each turn, so do not wait for the 
 ```
 
 Do not run both the hook and `/goal` at once. Tell the user they can stop the loop at any time by disabling the hook under `/hooks` or starting a new conversation with `/clear`.
+
+## Context checkpoint
+
+REA investigation and the build loop are token-hungry, and a spike that runs out of context mid-feature loses its working state. The second Stop hook in the frontmatter, `scripts/context_checkpoint.py`, reads the session transcript after every turn. The first time the conversation has used 50% of its context window it blocks the stop with a message that begins `CONTEXT CHECKPOINT`. That message overrides the completion evaluator's keep-working reason. When it arrives:
+
+1. Do not start or continue any `F-n` work. Commit whatever is uncommitted on the spike branch; do not push.
+2. Invoke the `handoff` skill with the argument `Resume the rea-spike build of <target> in <language> from spike/PROGRESS.md`. Save the document as `spike/HANDOFF.md` inside the project, overriding handoff's temporary-directory default so the document travels with the branch, and commit it. The document must contain:
+   - **Done**: the mode and stated relationship from `spike/SCOPE.md`, the resolved target, the pinned language version, the project path, the spike branch, the `done` and `todo` counts from `spike/PROGRESS.md`, the latest test, lint, and benchmark exit codes, and the turn count.
+   - **Next**: the ordered `F-n` rows still `todo`, any failing checks or missed benchmark targets, open problems, and anything blocked on the user.
+   - **Resume**: the exact command, `cd <project path>` then `/rea-spike <same two arguments>`, and a note that the skill reads `spike/HANDOFF.md` and skips straight to Phase 3.
+   - **Suggested skills**: `rea-spike`, `reverse-engineer-anything`, and `handoff`.
+   - Paths to the other spike files instead of copies of their contents, and no secrets.
+3. End the turn with a short message that begins `CONTEXT CHECKPOINT`, gives the path to the handoff document, and offers the user two choices: open a new chat in the project directory and run `/rea-spike` with the same arguments to resume from the handoff, or reply `continue` to keep building in this chat until the context window is exhausted. The completion evaluator treats that message as a valid stop.
+
+The checkpoint fires once per chat. If the user replies `continue`, pick up `spike/PROGRESS.md` where it stopped; the hook stays silent for the rest of the session, so the loop runs until the context window is exhausted or the completion condition holds. If the hook never fires, for example because hooks are disabled, the fallback `/goal` line in Phase 3 has no checkpoint; tell the user to run `/handoff` themselves when `/context` shows about half the window used.
+
+Configuration, as environment variables set before Claude Code starts: `REA_SPIKE_HANDOFF_AT` changes the percentage or disables the checkpoint with `off`, `REA_SPIKE_CONTEXT_WINDOW` overrides the window size in tokens when the script's model-family detection is wrong, and `REA_SPIKE_PROJECT_DIR` names the project directory when it is not under the working directory. The script parses Claude Code's transcript file, whose format is internal and can change between releases; when it cannot read usage it stays silent rather than blocking. When this skill is installed outside the plugin, replace `${CLAUDE_PLUGIN_ROOT}` in the hook command with the path to the plugin checkout.
 
 ## Handoff summary
 

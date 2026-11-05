@@ -49,6 +49,16 @@
 |---|---|---|---|
 | D-1 | {A choice that was not obvious} | {Why, in terms of FR/NFR IDs or constraints} | {The condition under which it should be reopened} |
 
+## Version compatibility
+Checked {date} with Context Hub (chub) and the package registries.
+
+| Component | Declared | Current | Requires | Status | Evidence |
+|---|---|---|---|---|---|
+| {Runtime} | {version and source file} | {latest stable; EOL date of the declared line} | - | {ok, conflict, stale, unverified} | {release page} |
+| {Library} | {version or unpinned, and source file} | {Context Hub version and date} | {runtime floor and ceiling, peer ranges} | {status and reason} | {chub id; registry URL} |
+
+Effective runtime window: {highest floor, lowest ceiling}. Declared runtime {is inside it / is outside it}.
+
 ## Constraints and risks
 - {Fixed constraints: budget, existing systems, team size, deadlines}
 - {Risks in the design, and what would reduce them}
@@ -64,3 +74,4 @@
 - **Design to the must-have FRs.** Size the architecture for the first roadmap phases plus the scale target in the NFRs, not for every "could".
 - **Decisions are for the non-obvious.** Do not log "we used Git". Log the choices a new engineer would question, with the condition that would make you revisit them.
 - **Use the codebase.** When a project already exists, the stack table describes what is there; design only what is new, and note where the existing system constrains it.
+- **Versions are checked, not assumed.** The Version compatibility section is written by the `stack-check` skill from Context Hub and the package registries; leave it out rather than fill it by hand. Every conflict it finds becomes a constraint or a decision, never a silent edit to the Stack table.
