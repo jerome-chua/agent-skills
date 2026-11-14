@@ -1,10 +1,20 @@
 # agent-skills
 
-A personal marketplace of 14 [Claude Code](https://claude.com/claude-code) skills. Individual skills are also available through the [skills CLI](https://github.com/vercel-labs/skills).
+A personal marketplace of 17 [Claude Code](https://claude.com/claude-code) skills. Individual skills are also available through the [skills CLI](https://github.com/vercel-labs/skills).
 
 ## Skills
 
 The examples below use standalone Claude Code commands. If you installed the plugin, add the `agent-skills:` prefix, for example `/agent-skills:explain-simply README.md`. See [Claude Code’s plugin command format](https://code.claude.com/docs/en/plugins).
+
+### Research
+
+- **[best-practices](skills/best-practices/SKILL.md)** — Finds the five most authoritative authors, companies, and standards on an engineering subject, and the specific piece each one wrote about it.
+  - Input: the subject, optionally with a narrower angle or names to check, for example `Testing, like Kent Beck`.
+  - Output: a ranked list with a link, the year, and the core argument of each piece, then where the sources disagree and which one to read first.
+  - Searches the web and checks every attribution. If a person you named has not written about the subject, it says so and gives the closest piece.
+  ```bash
+  /best-practices Observability
+  ```
 
 ### Understanding
 
@@ -91,6 +101,15 @@ The examples below use standalone Claude Code commands. If you installed the plu
   - With a file, directory, or diff: reviews that code, lists each violation with its file and line, then fixes the violations. Asks before a refactor that changes a public interface or touches many files.
   ```bash
   /clean-code src/billing/
+  ```
+- **[add-logging](skills/add-logging/SKILL.md)** — Audits the logging in an existing backend or frontend service, then rewrites it to follow logging best practices and adds the entries that are missing.
+  - Backend: structured entries, correct levels, constant messages with context fields, each error logged once where it is handled, one canonical line per request, and a propagated request ID.
+  - Frontend: no stray `console` output in production, errors sent to the app's error reporting, and global handlers for uncaught errors.
+  - Removes secrets and personal data from log calls first.
+  - Uses the logging library and field names the service already has. Asks before it adds a dependency, or changes a message that an alert or dashboard depends on.
+  - Input: a path to a service, directory, or file. With no input, it uses the current project. `--dry-run` prints the audit and changes nothing.
+  ```bash
+  /add-logging services/api --dry-run
   ```
 - **[pm-commit](skills/pm-commit/SKILL.md)** — Writes a git commit message from a product manager's point of view.
   - Says what changed and why it matters to users, with enough technical detail to be specific.
@@ -189,6 +208,8 @@ agent-skills/
 │   ├── marketplace.json     # marketplace: jerome-agent-skills
 │   └── plugin.json          # plugin: agent-skills
 ├── skills/
+│   ├── add-logging/
+│   ├── best-practices/
 │   ├── clean-code/
 │   ├── execute-with-pre-and-post/
 │   ├── explain-diff/
