@@ -25,6 +25,14 @@ The examples below use standalone Claude Code commands. If you installed the plu
   ```bash
   /explain-diff main..feature/retry-queue
   ```
+- **[record-before-after](skills/record-before-after/SKILL.md)** — Records a side-by-side before/after video of a UI change, so a reviewer can see it without checking out the branch.
+  - Reads the ticket (argument, branch name, or pull request) to decide what to click through.
+  - Runs the base branch in a git worktree and the feature branch in place, explores both, then replays the same steps on each in a recorded headless browser ([Playwright](https://playwright.dev/)).
+  - Output: one captioned MP4 (base on the left, feature on the right) plus an `.srt` file, saved in a dated folder outside the repository. `--narrate` adds a voice-over.
+  - Needs `ffmpeg`. Start settings are saved once in `.before-after.json` ([format](skills/record-before-after/CONFIG-FORMAT.md)).
+  ```bash
+  /record-before-after ENG-123 --narrate
+  ```
 - **[explain-simply](skills/explain-simply/SKILL.md)** — Explains a subject in plain, controlled English, written about 80% of the way to [ASD-STE100](https://www.asd-ste100.org/) (Simplified Technical English). (Idea from [Andrej Karpathy](https://x.com/karpathy/status/2105819303471976479).)
   - Subject: a file, a directory, a URL, or a topic.
   - With no subject, it explains the current conversation.
@@ -220,6 +228,9 @@ agent-skills/
 │   ├── max-words/
 │   ├── pm-commit/
 │   ├── rea-spike/
+│   │   └── scripts/
+│   ├── record-before-after/
+│   │   ├── fonts/
 │   │   └── scripts/
 │   ├── specs/
 │   ├── stack-check/
