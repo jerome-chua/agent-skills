@@ -12,6 +12,7 @@ The examples below use standalone Claude Code commands. If you installed the plu
   - Input: the subject, optionally with a narrower angle or names to check, for example `Testing, like Kent Beck`.
   - Output: a ranked list with a link, the year, and the core argument of each piece, then where the sources disagree and which one to read first.
   - Searches the web and checks every attribution. If a person you named has not written about the subject, it says so and gives the closest piece.
+  - For front-end web platform subjects, it also prompts you to install Chrome's [Modern Web Guidance](https://developer.chrome.com/docs/modern-web-guidance) if your agent does not have it.
   ```bash
   /best-practices Observability
   ```
